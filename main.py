@@ -25,34 +25,32 @@ def crop_recommedation():
     try:
         print('hello')
         data = request.get_json()
-        N = int(data["N"])
-        P = int(data["P"])
-        K = int(data["K"])
-        ph = float(data["ph"])
-        rainfall = float(data["rainfall"])
-        city = data["city"]
+        print(data)
+        N = data["N"]
+        P = data["P"]
+        K = data["K"]
+        ph = data["ph"]
+        rainfall = data["rainfall"]
+        humidity = data["humidity"]
+        temperature = data["temperature"]
         lang = 'en'
-        # if lang == None:
-        #     lang = "en"
-        # city = translate_text_to_language(city, "en", lang)
 
-        try:
-            city_info = weather_fetch(city)
-        except Exception:
-            return response_payload(False, msg="Unable to get the city information. Please try again")
-
-        if city_info != None:
-            temperature, humidity = city_info
-            data = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
-            print(data)
-            my_prediction = recommend_crop(data)
-            print(my_prediction)
-            recommendation_result = {
-                "prediction": translate_text_to_language(my_prediction[0], lang, "en")
+        # try:
+        #     city_info = weather_fetch(city)
+        # except Exception:
+        #     return response_payload(False, msg="Unable to get the city information. Please try again")
+        #
+        # if city_info != None:
+        #     temperature, humidity = city_info
+        data = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
+        print(data)
+        my_prediction = str(recommend_crop(data)[0])
+        print(my_prediction, "------------------")
+        recommendation_result = {
+              "prediction": my_prediction
             }
-            return response_payload(True,recommendation_result, "Success search")
-        else:
-            return response_payload(False, 'Please try again')
+        return response_payload(True,recommendation_result, "Success search")
+
 
     except Exception:
         return response_payload(False, msg="Request body is not valid")

@@ -7,6 +7,6 @@ def recommend_crop(data):
         open(crop_recommendation_model_path, 'rb'))
     return crop_recommendation_model.predict(data)
 
-# data =np.array([[12, 13, 14, 44, 10, 7.5, 9]])
-#
-# print(recommend_crop(data))
+data =np.array([[10, 10, 14, 33, 88, 8.5, 200]])
+
+print(recommend_crop(data))
