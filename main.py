@@ -23,16 +23,18 @@ def test():
 @app.route('/crop-recommedation', methods=["POST"])
 def crop_recommedation():
     try:
-        N = int(input())
-        P = int(input())
-        K = int(input())
-        ph = float(input())
-        rainfall = float(input())
-        city = input()
-        lang = input()
-        if lang == None:
-            lang = "en"
-        city = translate_text_to_language(city, "en", lang)
+        print('hello')
+        data = request.get_json()
+        N = int(data["N"])
+        P = int(data["P"])
+        K = int(data["K"])
+        ph = float(data["ph"])
+        rainfall = float(data["rainfall"])
+        city = data["city"]
+        lang = 'en'
+        # if lang == None:
+        #     lang = "en"
+        # city = translate_text_to_language(city, "en", lang)
 
         try:
             city_info = weather_fetch(city)
@@ -42,11 +44,13 @@ def crop_recommedation():
         if city_info != None:
             temperature, humidity = city_info
             data = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
+            print(data)
             my_prediction = recommend_crop(data)
+            print(my_prediction)
             recommendation_result = {
                 "prediction": translate_text_to_language(my_prediction[0], lang, "en")
             }
-            return response_payload(True, recommendation_result, "Success search")
+            return response_payload(True,recommendation_result, "Success search")
         else:
             return response_payload(False, 'Please try again')
 

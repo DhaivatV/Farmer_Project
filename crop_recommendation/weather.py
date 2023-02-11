@@ -22,3 +22,4 @@ def weather_fetch(city_name):
         return temperature, humidity
     else:
         return None
+
